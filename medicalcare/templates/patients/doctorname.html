@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title   %}
+
+Home page
+
+{% endblock  %}
+
+{% block content %}
+
+  <u><b><center><a>Select the doctor you can contact</a></center></u></b>
+<ul>
+   {%  for post in users %}
+        <br><br>
+       Doctor_name: &nbsp<a href = "/patients/doctorhome/{{ post.id }}"> {{ post.doctor_name }}</a> &nbsp &nbsp Specialization:&nbsp{{ post.specialization }}
+
+    {%  endfor %}
+
+</ul>
+{% endblock  %}
+

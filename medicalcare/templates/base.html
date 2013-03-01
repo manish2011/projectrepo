@@ -1,0 +1,72 @@
+<html>
+<head>
+<title>
+{% block title   %}
+
+MEDICARE
+{%  endblock   %}
+
+</title>
+      {%  block head  %}
+ <style>    
+    body {
+        
+    background-color:rgba(238,232,170,0.7) 
+    }
+
+   a { 
+       color:#044003;
+      }
+        
+
+    #divhome {
+        background-color:rgba(0,0,0,0.2);
+            
+        }  
+    
+    #login {
+        background-color:rgba(0,0,0,0.2);
+        margin:10px 500px; 
+        text-align:center;
+           }
+    h1 { 
+        background-color:rgba(0,0,0,0.2);      
+        color:#044003;      
+        margin-top:20px;
+
+       }
+
+ 
+
+    
+</style>
+<b><u><center>welcome to Medicare</u></center></b>
+<br><br><br><br><br><br>
+
+{% endblock  %}
+
+
+</head>
+<body>
+<div id="divhome">
+             <div="login">
+
+ {%  if request.user.is_authenticated %}
+
+ <p>Welcome, {{request.user.username}} ||<a href="{% url patients.views.logout_view %}">Logout</a>{% else %} Welcome guest||
+      <a href="{% url patients.views.login_view %}">User-Login</a>  ||
+       <a href = " {% url patients.views.create_patient_app %}">Patient-Registration </a> ||
+       <a href = " {% url patients.views.patientdata %}">Patients </a> <br><br><br>
+       <a href = " {% url patients.views.create_doctor_app %}"> Doctor-Registration </a> ||
+       <a href = " {% url patients.views.doctordata %}">Doctors </a>
+ </p>    
+      {%  endif    %}
+
+  
+      </div>
+{%   block  content   %}
+
+{%  endblock   %}
+</div>
+</body>
+</html>

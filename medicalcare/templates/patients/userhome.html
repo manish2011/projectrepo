@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title   %}
+
+Home page
+
+{% endblock  %}
+
+{% block content %}
+<ul>
+   {%  for post in users %}
+        <br><br>
+       <a href = "/patients/showdata/{{ post.id }}">{{ post.patient_name }}</a>
+
+    {%  endfor %}
+
+</ul>
+{% endblock  %}
+

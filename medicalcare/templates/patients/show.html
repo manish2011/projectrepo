@@ -1,0 +1,35 @@
+{% extends "base.html"  %}
+
+{% block title   %}
+
+Registered patients
+
+{% endblock %}
+
+
+{%  block content %}
+
+<h1><center>Doctor details</center></h1><hr><hr>
+ <ul>
+   
+               
+                   Username:{{ detail.username }}<br>
+                   DoctorName :{{ doctor.doctor_name }}<br>
+                   Specialization :{{ doctor.specialization }}<br>
+                   Email:{{ detail.email }}<br>
+                   Password: {{ detail.password }}<br>
+                   Mobile_no: {{ doctor.mobile_no }}<br>
+                   Address: {{  doctor.address }}<br>
+                   
+                   
+    
+<br><br><br>
+
+
+           </ul>
+
+       <center><h2><i><a href="/">Back to home Page</a></i></h2></center><br>
+
+
+{% endblock  %}
+

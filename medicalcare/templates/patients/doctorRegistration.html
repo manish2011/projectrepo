@@ -1,0 +1,21 @@
+{%  extends "base.html"  %}
+
+{%  block  title %}
+Patient Registration
+
+{%   endblock %}
+{%  block content %}
+<h1><center>USER REGISTRATION FORM</center></h1><hr><hr>
+       <form action = "{% url patients.views.store %}" method="post">
+
+       <center>{{ form.as_p }}
+ 
+         <input type="submit" value="display">
+                   </form>
+                   </center>
+
+<center><h2><i><a href="/">Back to home Page</a></i></h2></center><br>
+
+       
+    {% endblock %}
+

@@ -1,0 +1,26 @@
+<html>
+    <head>
+
+
+   <link rel="stylesheet" type="text/css"/>
+   <style>    
+    body {
+        
+    background-color:rgba(238,232,170,0.7) 
+    }
+
+</style>
+
+        <title>Log in</title>
+        </head>
+            <body><center><div>
+                    {{ state }}
+                    <form action="{% url patients.views.login_view %}" method="post">
+             
+             username: <input type="text" name="username" value="{{username}}"/><br />
+             password: <input type="password" name="password" value=""/><br/>
+             <input type="submit" value="Log In"/>
+            </form>
+        </center></div></body>
+    </html>
+

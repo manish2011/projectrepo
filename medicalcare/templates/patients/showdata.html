@@ -1,0 +1,35 @@
+{% extends "base.html"  %}
+
+{% block title   %}
+
+Registered patients
+
+{% endblock %}
+
+
+{%  block content %}
+
+<h1><center>Patient details</center></h1><hr><hr>
+ <ul>
+   
+               
+                   name:{{ users.patient.username }}<br>
+                   patient_name :{{ users.patient_name }}<br>
+                   disease_name :{{ users.disease_name }}<br>
+                   symptoms :{{ users.symptoms }}<br>
+                   age :{{ users.age }}<br>
+                   Email:{{ users.patient.email }}<br>
+                   gender :{{ users.gender }}<br>
+                   
+                   
+    
+<br><br><br>
+
+
+           </ul>
+
+       <center><h2><i><a href="/">Back to home Page</a></i></h2></center><br>
+
+
+{% endblock  %}
+
