@@ -33,14 +33,25 @@ class DoctorForm(forms.Form):
     password = forms.CharField(widget=forms.PasswordInput)
     address        = forms.CharField(max_length = 75)
 
-'''
-class DynamicForm(Form):
-    def __init__(self, *args, **kwargs):
-        my_arg = kwargs.pop('my_arg')
-        super(DynamicForm, self).__init__(*args, **kwargs)
-        doctor = forms.ChoicefField(choices = my_arg)
 
-'''
+class CareForm(forms.Form):
+    
+    specialization = forms.CharField(max_length = 30)
+    disease_name = forms.CharField(max_length = 30)
+    doctor_name = forms.CharField(max_length = 30)
+    patient_name = forms.CharField(max_length = 30)
+    
+
+class AdminForm(forms.Form):
+
+    username = forms.CharField()
+    admin_name = forms.CharField(max_length = 30) 
+    password = forms.CharField(widget=forms.PasswordInput)
+    email        = forms.EmailField()
+    mobile_no    = forms.IntegerField()
+    
+
+   
    
 
 

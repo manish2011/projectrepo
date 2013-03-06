@@ -2,6 +2,13 @@
 import os
 
 
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'manish.kumar@tarams.com'
+EMAIL_HOST_PASSWORD = '09313816036'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -117,7 +124,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-     'patients'
+     'patients',   
     # Uncomment the next line to enable the admin:
     # 'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
