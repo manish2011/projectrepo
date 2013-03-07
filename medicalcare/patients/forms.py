@@ -38,7 +38,11 @@ class CareForm(forms.Form):
     
     doctor_name = forms.CharField(max_length = 30)
     patient_name = forms.CharField(max_length = 30)
+
+class DeleteForm(forms.Form):
     
+    doctor_name = forms.CharField(max_length = 30)
+        
 
 class AdminForm(forms.Form):
 

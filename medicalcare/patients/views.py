@@ -8,6 +8,7 @@ from patients.forms import AdminForm
 from patients.forms import PatientForm
 from patients.forms import DoctorForm
 from patients.forms import CareForm
+from patients.forms import DeleteForm
 
 from django.views.decorators.csrf import csrf_exempt
 from django.template import loader, RequestContext
@@ -36,6 +37,10 @@ def create_doctor_app(request):
 def care_app(request):
     form = CareForm()      
     return render_to_response('patients/care.html', locals())
+
+def delete_app(request):
+    form = DeleteForm()      
+    return render_to_response('patients/delete.html', locals())
 
 @csrf_exempt
 def create_admin_app(request):
@@ -186,7 +191,7 @@ def compose(request):
             admin.save()
             profile = UserProfile.objects.create(
                 user = detail,                
-                user_type = "admin",
+                user_type = "head",
                 )
             profile.save()
             return render_to_response('patients/ownerdata.html',locals())        
@@ -216,17 +221,20 @@ def login_view(request):
         if user is not None:
             if user.is_active:
                 login(request, user)
-                request_user = UserProfile.objects.get(user = user)
-                print request_user.user_type
-                if request_user.user_type == "doctor":
-                    return HttpResponseRedirect( '/patients/patientdata/' )
-                elif request_user.user_type == "admin":
-
-                    return  HttpResponseRedirect( '/patients/alldata/' )
-
+                if user.is_staff:
+                    return HttpResponseRedirect('/patients/alldata')
                 else:
+                    request_user = UserProfile.objects.get(user = user)
+                    print request_user.user_type
+                    if request_user.user_type == "doctor":
+                        return HttpResponseRedirect( '/patients/patientdata/' )
+                    elif request_user.user_type == "patient":
 
-                    return  HttpResponseRedirect( '/patients/doctordata/' )
+                        return  HttpResponseRedirect( '/patients/doctordata/' )
+
+                    else:
+
+                        return  HttpResponseRedirect( '/patients/alldata/' )
                             
             else:
                 state = "Your account is not active, please contact the site admin."
@@ -279,6 +287,23 @@ def check(request):
     doc = Care.objects.filter(doctor_name = request.user)
     
     return render_to_response('patients/showpatient.html',locals())
+
+@csrf_exempt
+def delete(request,n_id):
+
+    users = Patients.objects.filter(id = n_id).delete()
+    
+    return render_to_response('patients/deleteuser.html',locals())
+
+
+@csrf_exempt
+def remove(request,o_id):
+
+    users = Doctors.objects.filter(id = o_id).delete()
+    
+    return render_to_response('patients/deleteuser.html',locals())
+    
+   
 
 
     
