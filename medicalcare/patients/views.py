@@ -138,8 +138,8 @@ def state(request):
         if form.is_valid():
   
             care = Care.objects.create(
-            special=Doctors.objects.get(specialization=form.cleaned_data['specialization']),
-            disease=Patients.objects.get(disease_name=form.cleaned_data['disease_name']),
+            special=Doctors.objects.get(doctor_name=form.cleaned_data['doctor_name']),
+            disease=Patients.objects.get(patient_name=form.cleaned_data['patient_name']),
             doctor_name = form.cleaned_data['doctor_name'],
             patient_name = form.cleaned_data['patient_name'],
             )

@@ -36,8 +36,6 @@ class DoctorForm(forms.Form):
 
 class CareForm(forms.Form):
     
-    specialization = forms.CharField(max_length = 30)
-    disease_name = forms.CharField(max_length = 30)
     doctor_name = forms.CharField(max_length = 30)
     patient_name = forms.CharField(max_length = 30)
     
