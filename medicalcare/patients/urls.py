@@ -27,7 +27,10 @@ urlpatterns = patterns('',
     url(r'^check/$',views.check),
     url(r'^change/$',views.change_password),
     url(r'^reset/$',views.reset),
-    
+    url(r'^new/$',views.new_password),
+    url(r'^get/$',views.reset_password),
+    url(r'^gen/$',views.generate_password),
+    url(r'^fresh/$',views.fresh_password),
     
 
 )

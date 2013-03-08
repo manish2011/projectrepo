@@ -19,7 +19,8 @@
              
              username: <input type="text" name="username" value="{{username}}"/><br />
              password: <input type="password" name="password" value=""/><br/>
-             <input type="submit" value="Log In"/>
+             <input type="submit" value="Log In"/><br>
+               <a href = "{% url patients.views.reset_password %}">forgot password</a>
             </form>
         </center></div></body>
     </html>

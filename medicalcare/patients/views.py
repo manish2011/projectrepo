@@ -10,6 +10,8 @@ from patients.forms import DoctorForm
 from patients.forms import CareForm
 from patients.forms import DeleteForm
 from patients.forms import ChangePasswordForm
+from patients.forms import ForgotPasswordForm
+from patients.forms import NewPasswordForm
 
 from django.views.decorators.csrf import csrf_exempt
 from django.template import loader, RequestContext
@@ -326,6 +328,64 @@ def reset(request):
 
     form = ChangePasswordForm()
     return render_to_response('patients/change.html', locals())
+
+
+def  reset_password(request):
+
+    form = ForgotPasswordForm()
+    return render_to_response('patients/forgot.html', locals())
+
+def  generate_password(request):
+
+    form = NewPasswordForm()
+    return render_to_response('patients/new.html', locals())
+
+
+def  new_password(request):
+
+    if request.method=="POST":
+        form=ForgotPasswordForm(request.POST)
+        if form.is_valid():
+            username=form.cleaned_data['username']
+            print username
+            user=User.objects.get(username=username)
+            print user
+            if user is not None:
+                link="http://127.0.0.1:8000/patients/gen/"
+                send_mail("RESET PASSWORD",link,"manish.kumar@tarams.com",[user.email])
+                return HttpResponseRedirect('/patients/login/')
+            else:
+                return render_to_response('index.html',locals())
+        else:
+            reg_form=form
+            return render_to_response('forgot_password.html',locals())
+    else:
+        form=ForgotPasswordForm()
+        state="Please enter Username"
+        return render_to_response('forgot_password.html',locals())
+
+
+
+def fresh_password(request):
+   if request.method=="POST":
+       form= NewPasswordForm(request.POST)
+       if form.is_valid():
+           username=form.cleaned_data['username']
+           user = User.objects.get(username=username)
+           print user
+           user.set_password(str(form.cleaned_data['password']))
+           user.save()
+           return render_to_response('patients/login.html',locals())
+       else:
+           lform = form
+           return render_to_response('patients/new.html',locals())
+   else:
+       form=NewPasswordForm()
+       state="Please enter your new password"
+       return render_to_response('patients/new.html',locals())
+ 
+
+
    
 
 

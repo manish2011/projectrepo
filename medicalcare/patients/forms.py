@@ -57,7 +57,17 @@ class ChangePasswordForm(forms.Form):
 
     password = forms.CharField(widget=forms.PasswordInput)
 
-    
+
+class ForgotPasswordForm(forms.Form):
+
+    username = forms.CharField()
+
+
+
+class NewPasswordForm(forms.Form):
+
+    username = forms.CharField()
+    password = forms.CharField(widget=forms.PasswordInput)
     
 
    
