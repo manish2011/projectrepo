@@ -51,6 +51,13 @@ class AdminForm(forms.Form):
     password = forms.CharField(widget=forms.PasswordInput)
     email        = forms.EmailField()
     mobile_no    = forms.IntegerField()
+
+
+class ChangePasswordForm(forms.Form):
+
+    password = forms.CharField(widget=forms.PasswordInput)
+
+    
     
 
    

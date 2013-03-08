@@ -9,6 +9,7 @@ from patients.forms import PatientForm
 from patients.forms import DoctorForm
 from patients.forms import CareForm
 from patients.forms import DeleteForm
+from patients.forms import ChangePasswordForm
 
 from django.views.decorators.csrf import csrf_exempt
 from django.template import loader, RequestContext
@@ -228,13 +229,13 @@ def login_view(request):
                     print request_user.user_type
                     if request_user.user_type == "doctor":
                         return HttpResponseRedirect( '/patients/patientdata/' )
-                    elif request_user.user_type == "patient":
+                    elif request_user.user_type == "head":
 
-                        return  HttpResponseRedirect( '/patients/doctordata/' )
+                        return  HttpResponseRedirect( '/patients/alldata/' )
 
                     else:
 
-                        return  HttpResponseRedirect( '/patients/alldata/' )
+                        return  HttpResponseRedirect( '/patients/doctordata/' )
                             
             else:
                 state = "Your account is not active, please contact the site admin."
@@ -302,7 +303,29 @@ def remove(request,o_id):
     users = Doctors.objects.filter(id = o_id).delete()
     
     return render_to_response('patients/deleteuser.html',locals())
+
+
+def change_password(request):
+   if request.method=="POST":
+       form=ChangePasswordForm(request.POST)
+       if form.is_valid():
+           register_user=User.objects.get(username=request.user.username)
+           register_user.set_password(str(form.cleaned_data['password']))
+           register_user.save()
+           return HttpResponseRedirect('/patients/login/')
+       else:
+           state="please enter a new password"
+           return render_to_response('patients/change.html',locals())
+   else:
+       form=ChangePasswordForm()
+       state="Enter a New Password"
+       return render_to_response('patients/change.html',locals())
     
+
+def reset(request):
+
+    form = ChangePasswordForm()
+    return render_to_response('patients/change.html', locals())
    
 
 

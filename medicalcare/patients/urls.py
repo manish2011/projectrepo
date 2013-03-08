@@ -25,6 +25,9 @@ urlpatterns = patterns('',
     url(r'remove/(?P<o_id>\d+)/$','patients.views.remove'),
     url(r'^alldata/$',views.alldata),
     url(r'^check/$',views.check),
+    url(r'^change/$',views.change_password),
+    url(r'^reset/$',views.reset),
+    
     
 
 )
