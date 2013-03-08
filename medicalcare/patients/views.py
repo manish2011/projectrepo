@@ -82,7 +82,7 @@ def save(request):
                 )
             profile.save()
             
-            send_mail('welcome email', 'welcome to medicare', 'manish.kumar@tarams.com', [detail.email])
+            send_mail('welcome email', 'welcome to medicare', 'medicalcare.project@gmail.com', [detail.email])
          
             return render_to_response('patients/display.html',locals())        
         else:
@@ -128,7 +128,8 @@ def store(request):
             )
                          
             profile.save()
-            send_mail('welcome email', 'welcome to medicare.this mail you got as i have registered you in my website.', 'manish.kumar@tarams.com', [detail.email])
+            send_mail('welcome email', 'welcome to medicare.this mail you got as i have registered you in my website.', 'medicalcare.project@gmail.com',      
+            [detail.email])
             return render_to_response('patients/show.html',locals())        
     else:
         print "loading form"

@@ -4,8 +4,8 @@ import os
 
 
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'manish.kumar@tarams.com'
-EMAIL_HOST_PASSWORD = '09313816036'
+EMAIL_HOST_USER = 'medicalcare.project@gmail.com'
+EMAIL_HOST_PASSWORD = 'tarams2013'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
