@@ -5,47 +5,69 @@ from django.contrib.auth.models import User
 
 
 class Patients(models.Model):
-    patient = models.ForeignKey(User,unique=True)
+    patient = models.ForeignKey(User)
     
-    patient_name = models.CharField(max_length = 30,null = True)
-    disease_name = models.CharField(max_length = 30,null = True)
-    symptoms     = models.TextField(null = True)
-    age          = models.IntegerField(null = True)
-    gender       = models.CharField(max_length = 6,null = True)
-    mobile_no    = models.IntegerField(null = True)
+    patient_name = models.CharField(max_length = 30)
+    disease_name = models.CharField(max_length = 30)
+    symptoms     = models.TextField()
+    age          = models.IntegerField()
+    gender       = models.CharField(max_length = 6)
+    mobile_no    = models.IntegerField()
     
  
 
 class Doctors(models.Model):    
-    doctor = models.ForeignKey(User,unique=True)
-    doctor_name    = models.CharField(max_length = 30,null = True)
-    specialization = models.CharField(max_length = 30,null = True)
-    medicine     =  models.CharField(max_length = 75,null = True)
-    mobile_no      = models.IntegerField(null = True)
+    doctor = models.ForeignKey(User)
+    doctor_name    = models.CharField(max_length = 30)
+    specialization = models.CharField(max_length = 30)
+    medicine     =  models.CharField(max_length = 75)
+    mobile_no      = models.IntegerField()
     
-    address        = models.TextField(null = True)
+    address        = models.TextField()
 
 
 class Care(models.Model):
     special = models.ForeignKey(Doctors)
     disease = models.ForeignKey(Patients)        
-    patient_name = models.CharField(max_length = 30,null = True)
-    doctor_name    = models.CharField(max_length = 30,null = True) 
+    patient_name = models.CharField(max_length = 30)
+    doctor_name    = models.CharField(max_length = 30) 
 
 
 class Admin(models.Model):
     admin = models.ForeignKey(User,unique=True)
-    admin_name = models.CharField(max_length = 30,null = True)        
-    mobile_no    = models.IntegerField(null = True)  
+    admin_name = models.CharField(max_length = 30)        
+    mobile_no    = models.IntegerField()  
     
 
 class AdminTest(models.Model):
     admin = models.ForeignKey(User,unique=True)
-    admin_name = models.CharField(max_length = 30,null = True)        
-    mobile_no    = models.IntegerField(null = True)
+    admin_name = models.CharField(max_length = 30)        
+    mobile_no    = models.IntegerField()
     
 
 class UserProfile(models.Model):
-    user = models.ForeignKey(User,unique=True)
+    user = models.ForeignKey(User)
     user_type = models.CharField(max_length = 20)
 
+
+
+
+class Donors(models.Model):
+
+    blood_group = models.CharField(max_length = 15)
+    donor_name = models.CharField(max_length = 30)
+    donation_date = models.DateField()
+    donor_age = models.IntegerField()
+    mobile_no = models.IntegerField()
+
+
+class Benificiar(models.Model):
+    
+    reciepent = models.ForeignKey(Patients)
+    blood_group = models.CharField(max_length = 15)
+    from_date = models.DateField()
+  
+
+
+    
+    

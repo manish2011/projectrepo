@@ -3,7 +3,11 @@ from django.http import HttpResponse
 from patients.models import Doctors , UserProfile
 from patients.models import Patients , UserProfile
 from patients.models import Admin , UserProfile
+from patients.models import Doctors
+from patients.models import Donors
+
 from patients.models import Care
+from patients.models import Benificiar
 from patients.forms import AdminForm
 from patients.forms import PatientForm
 from patients.forms import DoctorForm
@@ -12,6 +16,10 @@ from patients.forms import DeleteForm
 from patients.forms import ChangePasswordForm
 from patients.forms import ForgotPasswordForm
 from patients.forms import NewPasswordForm
+from patients.forms import BeneficiarForm
+from patients.forms import DonorForm
+
+
 
 from django.views.decorators.csrf import csrf_exempt
 from django.template import loader, RequestContext
@@ -49,6 +57,19 @@ def delete_app(request):
 def create_admin_app(request):
     form = AdminForm()      
     return render_to_response('patients/adminRegistration.html', locals())
+
+
+
+
+@csrf_exempt
+def donor_app(request):
+    form = DonorForm()      
+    return render_to_response('patients/donorRegistration.html', locals())
+
+@csrf_exempt
+def beneficiar_app(request):
+    form = BeneficiarForm()      
+    return render_to_response('patients/beneficiarRegistration.html', locals())
 
 @csrf_exempt
 def save(request):
@@ -246,7 +267,6 @@ def login_view(request):
             state = "Your username and/or password is incorrect."
 
     return render_to_response('patients/login.html',{'state':state, 'username': username})
- 
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect( reverse('patients.views.index') )
@@ -365,7 +385,10 @@ def  new_password(request):
         state="Please enter Username"
         return render_to_response('forgot_password.html',locals())
 
-
+@csrf_exempt
+def donor_app(request):
+    form = DonorForm()      
+    return render_to_response('patients/donorRegistration.html', locals())
 
 def fresh_password(request):
    if request.method=="POST":
@@ -384,6 +407,84 @@ def fresh_password(request):
        form=NewPasswordForm()
        state="Please enter your new password"
        return render_to_response('patients/new.html',locals())
+
+
+
+
+@csrf_exempt
+def donor(request):
+    print "Inside save"
+    form = DonorForm(request.POST)
+    if request.method == 'POST':
+        form = DonorForm(request.POST)   
+        if form.is_valid():
+
+            detail= Donors.objects.create(
+               
+            donor_name  = form.cleaned_data['donor_name'],
+            blood_group = form.cleaned_data['blood_group'],
+            donation_date = form.cleaned_data['donation_date'],
+            donor_age = form.cleaned_data['donor_age'],
+            mobile_no = form.cleaned_data['mobile_no'],
+            )
+            detail.save()
+
+            
+            return render_to_response('patients/donor.html',locals())        
+    else:
+        print "loading form"
+        form = DonorForm()
+    return render_to_response('patients/donorRegistration.html',locals())
+
+
+@csrf_exempt
+def beneficiar(request):
+    print "Inside save"
+    form = BeneficiarForm(request.POST)
+    if request.method == 'POST':
+        form = BeneficiarForm(request.POST)   
+        if form.is_valid():
+
+            acceptor = Beneficiar.objects.create(
+            reciepent = Patients.objects.get(patient_name=form.cleaned_data['patient_name']),
+            blood_group = form.cleaned_data['blood_group'],
+            from_date = form.cleaned_data['from_date'],
+       
+            )
+            acceptor.save()
+            return render_to_response('patients/acceptor.html',locals())        
+    else:
+        print "loading form"
+        form = BeneficiarForm()
+    return render_to_response('patients/beneficiarRegistration.html',locals())
+
+def duration(request):
+
+    obj = Donors.objects.filter(donation_date__gt = form.cleaned_data['from_date'])
+    
+    return render_to_response('patients/duration.html',locals()) 
+
+
+
+
+
+def duration(request):
+
+    a = request.POST.get('from_date')
+    b = request.POST.get('blood_group')
+    obj = Donors.objects.filter(donation_date__gt = a , blood_group__startswith = b)
+    
+    return render_to_response('patients/duration.html',locals()) 
+
+
+    
+
+    
+
+
+        
+
+            
  
 
 

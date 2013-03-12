@@ -68,6 +68,25 @@ class NewPasswordForm(forms.Form):
 
     username = forms.CharField()
     password = forms.CharField(widget=forms.PasswordInput)
+
+
+class DonorForm(forms.Form):
+
+    donor_name = forms.CharField()
+    blood_group = forms.CharField()
+    donation_date = forms.DateField()
+    donor_age = forms.IntegerField()
+    mobile_no = forms.IntegerField()
+
+
+
+class BeneficiarForm(forms.Form):
+
+    patient_name = forms.CharField()
+    blood_group = forms.CharField()
+    from_date = forms.DateField()
+
+
     
 
    
