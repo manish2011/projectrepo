@@ -32,9 +32,10 @@ from django.core.mail import send_mail
 
 
 
-
 def index(request):
+    
     return render_to_response('base.html',locals())
+
 
 @csrf_exempt
 def create_patient_app(request):
@@ -475,30 +476,5 @@ def duration(request):
     obj = Donors.objects.filter(donation_date__gt = a , blood_group__startswith = b)
     
     return render_to_response('patients/duration.html',locals()) 
-
-
-    
-
-    
-
-
-        
-
-            
- 
-
-
-   
-
-
-    
- 
-   
-
-
-
-
-
-
 
 

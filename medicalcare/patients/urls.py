@@ -1,5 +1,6 @@
 from django.conf.urls import patterns, include, url
 from patients import views
+
 urlpatterns = patterns('',
 	
 	url(r'^$',views.index),
@@ -35,7 +36,7 @@ urlpatterns = patterns('',
     url(r'^get/$',views.reset_password),
     url(r'^gen/$',views.generate_password),
     url(r'^fresh/$',views.fresh_password),
-    
+
 
 )
 
