@@ -6,7 +6,7 @@ Patient Registration
 {%   endblock %}
 {%  block content %}
 <h1><center>USER REGISTRATION FORM</center></h1><hr><hr>
-       <form action = "{% url patients.views.store %}" method="post">
+       <form action = "{% url patients.views.store %}" method="POST" enctype="multipart/form-data">
 
        <center>{{ form.as_p }}
  

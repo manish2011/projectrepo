@@ -5,9 +5,12 @@ from patients.models import Patients , UserProfile
 from patients.models import Admin , UserProfile
 from patients.models import Doctors
 from patients.models import Donors
-
-from patients.models import Care
+from patients.models import Document
+from patients.models import Description
 from patients.models import Benificiar
+
+from patients.forms import DocumentForm
+from patients.models import Care
 from patients.forms import AdminForm
 from patients.forms import PatientForm
 from patients.forms import DoctorForm
@@ -18,8 +21,8 @@ from patients.forms import ForgotPasswordForm
 from patients.forms import NewPasswordForm
 from patients.forms import BeneficiarForm
 from patients.forms import DonorForm
-
-
+from patients.forms import DescriptionForm  
+import datetime
 
 from django.views.decorators.csrf import csrf_exempt
 from django.template import loader, RequestContext
@@ -31,52 +34,28 @@ from django.contrib.auth import logout
 from django.core.mail import send_mail
 
 
+######################################################### Function for Home Page ##################################################################################
+###################################################################################################################################################################
 
 def index(request):
     
     return render_to_response('base.html',locals())
 
 
+############################################################ Functio For Patient Registration #####################################################################
+###################################################################################################################################################################
+
 @csrf_exempt
 def create_patient_app(request):
     form = PatientForm()      
     return render_to_response('patients/patientRegistration.html', locals())
 
-def create_doctor_app(request):
-    form = DoctorForm()      
-    return render_to_response('patients/doctorRegistration.html', locals())
-
-def care_app(request):
-    form = CareForm()      
-    return render_to_response('patients/care.html', locals())
-
-def delete_app(request):
-    form = DeleteForm()      
-    return render_to_response('patients/delete.html', locals())
-
-@csrf_exempt
-def create_admin_app(request):
-    form = AdminForm()      
-    return render_to_response('patients/adminRegistration.html', locals())
-
-
-
-
-@csrf_exempt
-def donor_app(request):
-    form = DonorForm()      
-    return render_to_response('patients/donorRegistration.html', locals())
-
-@csrf_exempt
-def beneficiar_app(request):
-    form = BeneficiarForm()      
-    return render_to_response('patients/beneficiarRegistration.html', locals())
 
 @csrf_exempt
 def save(request):
     print "Inside save"
     if request.method == 'POST':
-        form = PatientForm(request.POST)   
+        form = PatientForm(request.POST, request.FILES)   
         if form.is_valid():
             detail= User.objects.create(  
                    
@@ -97,6 +76,7 @@ def save(request):
                 age = form.cleaned_data['age'],
                 gender = form.cleaned_data['gender'],
                 )
+            patient.img_upload = request.FILES['img_upload']
             patient.save()
             profile = UserProfile.objects.create(
                 user = detail,                
@@ -115,13 +95,21 @@ def save(request):
         form = PatientForm()
         return render_to_response('patients/patientRegistration.html',locals())  
 
+##########################################################  Function For Doctor Registration ######################################################################
+###################################################################################################################################################################
+
+
+
+def create_doctor_app(request):
+    form = DoctorForm()      
+    return render_to_response('patients/doctorRegistration.html', locals())
+
 
 @csrf_exempt
 def store(request):
     print "Inside save"
-    form = DoctorForm(request.POST)
     if request.method == 'POST':
-        form = DoctorForm(request.POST)   
+        form = DoctorForm(request.POST ,request.FILES)   
         if form.is_valid():
             detail= User.objects.create(   
                   
@@ -142,6 +130,7 @@ def store(request):
             address = form.cleaned_data['address'],
             medicine = form.cleaned_data['medicine'],
             )
+            doctor.img_upload = request.FILES['img_upload']
             doctor.save()
 
             profile = UserProfile.objects.create(
@@ -157,6 +146,15 @@ def store(request):
         print "loading form"
         form = DoctorForm()
     return render_to_response('patients/patientRegistration.html',locals())
+
+################################### Function for assigning  any patient to any doctor according to their specialization & disease by the ADMIN ####################
+###################################################################################################################################################################
+
+
+
+def care_app(request):
+    form = CareForm()      
+    return render_to_response('patients/care.html', locals())
 
 
 @csrf_exempt
@@ -188,6 +186,15 @@ def state(request):
 
 
 
+############################################################# Function For creating a third user as ADMIN #########################################################
+###################################################################################################################################################################
+
+
+@csrf_exempt
+def create_admin_app(request):
+    form = AdminForm()      
+    return render_to_response('patients/adminRegistration.html', locals())
+
 
 @csrf_exempt
 def compose(request):
@@ -210,10 +217,6 @@ def compose(request):
                 admin_name = form.cleaned_data['admin_name'],
                 mobile_no = form.cleaned_data['mobile_no'],       
                 )
-            
-       
-                
-                
             admin.save()
             profile = UserProfile.objects.create(
                 user = detail,                
@@ -231,7 +234,9 @@ def compose(request):
      
 
 
-     
+############################################################### Function for Log in of any User ################################################################## 
+###################################################################################################################################################################
+    
 
 
 @csrf_exempt
@@ -268,9 +273,41 @@ def login_view(request):
             state = "Your username and/or password is incorrect."
 
     return render_to_response('patients/login.html',{'state':state, 'username': username})
+
+########################################################## Function for any User to Logout ########################################################################
+###################################################################################################################################################################
+
+
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect( reverse('patients.views.index') )
+
+
+######################################################## Function for adding description toany patient by the doctor ##############################################
+###################################################################################################################################################################
+
+
+@csrf_exempt
+def desc_app(request,p_id):
+    if request.method=="POST":
+        form = DescriptionForm(request.POST ,request.FILES)      
+        if form.is_valid():
+            
+            desc=Description.objects.create(
+                patient=Patients.objects.get(id=p_id),
+                add_description=form.cleaned_data['add_description'],
+                posted_date=datetime.datetime.today(),
+                )
+            desc.img_upload = request.FILES['img_upload']
+            desc.save()
+                            
+            return render_to_response('patients/desc.html', locals())
+        else:
+            regform=form
+            return render_to_response('patients/description.html',locals())
+    else:
+        form=DescriptionForm()
+        return render_to_response('patients/description.html',locals())
 
 
 def patientdata(request):
@@ -312,6 +349,8 @@ def check(request):
     doc = Care.objects.filter(doctor_name = request.user)
     
     return render_to_response('patients/showpatient.html',locals())
+########################################################## Function to delete any user ############################################################################
+###################################################################################################################################################################
 
 @csrf_exempt
 def delete(request,n_id):
@@ -321,6 +360,12 @@ def delete(request,n_id):
     return render_to_response('patients/deleteuser.html',locals())
 
 
+def delete_app(request):
+    form = DeleteForm()      
+    return render_to_response('patients/delete.html', locals())
+
+
+
 @csrf_exempt
 def remove(request,o_id):
 
@@ -328,6 +373,13 @@ def remove(request,o_id):
     
     return render_to_response('patients/deleteuser.html',locals())
 
+########################################################### Function for changing the password ####################################################################
+###################################################################################################################################################################
+
+def reset(request):
+
+    form = ChangePasswordForm()
+    return render_to_response('patients/change.html', locals())
 
 def change_password(request):
    if request.method=="POST":
@@ -346,16 +398,15 @@ def change_password(request):
        return render_to_response('patients/change.html',locals())
     
 
-def reset(request):
-
-    form = ChangePasswordForm()
-    return render_to_response('patients/change.html', locals())
-
 
 def  reset_password(request):
 
     form = ForgotPasswordForm()
     return render_to_response('patients/forgot.html', locals())
+
+##################################################### Function for generating the new password ####################################################################
+###################################################################################################################################################################
+
 
 def  generate_password(request):
 
@@ -386,10 +437,6 @@ def  new_password(request):
         state="Please enter Username"
         return render_to_response('forgot_password.html',locals())
 
-@csrf_exempt
-def donor_app(request):
-    form = DonorForm()      
-    return render_to_response('patients/donorRegistration.html', locals())
 
 def fresh_password(request):
    if request.method=="POST":
@@ -410,6 +457,14 @@ def fresh_password(request):
        return render_to_response('patients/new.html',locals())
 
 
+############################################################# Function For Donor Registration #####################################################################
+###################################################################################################################################################################
+
+
+@csrf_exempt
+def donor_app(request):
+    form = DonorForm()      
+    return render_to_response('patients/donorRegistration.html', locals())
 
 
 @csrf_exempt
@@ -417,7 +472,7 @@ def donor(request):
     print "Inside save"
     form = DonorForm(request.POST)
     if request.method == 'POST':
-        form = DonorForm(request.POST)   
+        form = DonorForm(request.POST, request.FILES)   
         if form.is_valid():
 
             detail= Donors.objects.create(
@@ -428,6 +483,7 @@ def donor(request):
             donor_age = form.cleaned_data['donor_age'],
             mobile_no = form.cleaned_data['mobile_no'],
             )
+            detail.img_upload = request.FILES['img_upload']
             detail.save()
 
             
@@ -436,6 +492,14 @@ def donor(request):
         print "loading form"
         form = DonorForm()
     return render_to_response('patients/donorRegistration.html',locals())
+
+########################################################### Function for Beneficiar Requirements##################################################################
+###################################################################################################################################################################
+
+@csrf_exempt
+def beneficiar_app(request):
+    form = BeneficiarForm()      
+    return render_to_response('patients/beneficiarRegistration.html', locals())
 
 
 @csrf_exempt
@@ -459,15 +523,6 @@ def beneficiar(request):
         form = BeneficiarForm()
     return render_to_response('patients/beneficiarRegistration.html',locals())
 
-def duration(request):
-
-    obj = Donors.objects.filter(donation_date__gt = form.cleaned_data['from_date'])
-    
-    return render_to_response('patients/duration.html',locals()) 
-
-
-
-
 
 def duration(request):
 
@@ -478,3 +533,47 @@ def duration(request):
     return render_to_response('patients/duration.html',locals()) 
 
 
+################################################## Function For Uploading and Dowloading a File or Image ##########################################################
+###################################################################################################################################################################
+
+
+        
+def list(request):
+        if request.method == 'POST':
+            form = DocumentForm(request.POST, request.FILES)
+                        
+            if form.is_valid():
+                             
+                newdoc = Document.objects.create(
+                            uploaded_by = request.user,                
+                            title = form.cleaned_data['title'],
+                            description = form.cleaned_data['description'],
+                            )
+               
+                newdoc.docfile = request.FILES['docfile']
+                newdoc.save()   
+                
+                documents = Document.objects.all()
+                return render_to_response('patients/file.html',locals()) 
+            else:
+                form = DocumentForm()
+                documents = Document.objects.all()
+                return render_to_response('patients/list.html',locals())
+
+        else:
+            form = DocumentForm()
+            documents = Document.objects.all()
+            return render_to_response('patients/list.html',locals())
+
+def list_all(request):
+
+    documents = Document.objects.all()
+    return render_to_response('patients/file.html',locals())
+
+
+def details(request,c_id):
+    pat = Description.objects.filter(patient=Patients.objects.get(id = c_id))
+    
+    return render_to_response('patients/details.html',locals())
+
+            

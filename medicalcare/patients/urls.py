@@ -8,7 +8,6 @@ urlpatterns = patterns('',
     url(r'^generate/$',views.create_doctor_app),
     url(r'^admin/$',views.create_admin_app),
     url(r'^care/$',views.care_app),
-
     url(r'^donor/$',views.donor_app),
     url(r'^beneficiar/$',views.beneficiar_app),
 	url(r'^save/$',views.save),
@@ -36,6 +35,10 @@ urlpatterns = patterns('',
     url(r'^get/$',views.reset_password),
     url(r'^gen/$',views.generate_password),
     url(r'^fresh/$',views.fresh_password),
+    url(r'^list/$', views.list),
+    url(r'^list_all/$', views.list_all),
+    url(r'^desc/(?P<p_id>\d+)/', views.desc_app),
+    url(r'^details/(?P<c_id>\d+)/', views.details),
 
 
 )

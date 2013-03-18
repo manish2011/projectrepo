@@ -6,7 +6,6 @@ from django.forms import ModelForm
 from patients.models import Patients
 from patients.models import Doctors
 
-
 GEN = (
         ('M', 'Male'),
         ('F', 'Female'),
@@ -22,6 +21,7 @@ class PatientForm(forms.Form):
     mobile_no    = forms.IntegerField()
     email        = forms.EmailField()
     password = forms.CharField(widget=forms.PasswordInput)
+    img_upload = forms.FileField(label = 'select an image')
 
 class DoctorForm(forms.Form):
     username = forms.CharField()
@@ -32,6 +32,7 @@ class DoctorForm(forms.Form):
     email        = forms.EmailField()
     password = forms.CharField(widget=forms.PasswordInput)
     address        = forms.CharField(max_length = 75)
+    img_upload = forms.FileField(label = 'select an image')
 
 
 class CareForm(forms.Form):
@@ -62,13 +63,10 @@ class ForgotPasswordForm(forms.Form):
 
     username = forms.CharField()
 
-
-
 class NewPasswordForm(forms.Form):
 
     username = forms.CharField()
     password = forms.CharField(widget=forms.PasswordInput)
-
 
 class DonorForm(forms.Form):
 
@@ -77,7 +75,7 @@ class DonorForm(forms.Form):
     donation_date = forms.DateField()
     donor_age = forms.IntegerField()
     mobile_no = forms.IntegerField()
-
+    img_upload = forms.FileField(label = 'select an image')
 
 
 class BeneficiarForm(forms.Form):
@@ -86,20 +84,14 @@ class BeneficiarForm(forms.Form):
     blood_group = forms.CharField()
     from_date = forms.DateField()
 
-
+class DocumentForm(forms.Form):
     
-
-   
-   
-
-
-    
+    title = forms.CharField(max_length = 30)
+    description = forms.CharField(max_length = 80)
+    docfile = forms.FileField(label = 'select a file', help_text='max. 42 megabytes')
 
 
+class DescriptionForm(forms.Form):
 
-
-
-
-
-
-
+    add_description = forms.CharField(max_length = 80)
+    img_upload = forms.FileField(label = 'select an image')
