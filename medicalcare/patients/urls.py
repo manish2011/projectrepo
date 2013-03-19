@@ -39,6 +39,14 @@ urlpatterns = patterns('',
     url(r'^list_all/$', views.list_all),
     url(r'^desc/(?P<p_id>\d+)/', views.desc_app),
     url(r'^details/(?P<c_id>\d+)/', views.details),
+    url(r'^search/$',views.search),
+    url(r'^ask/$',views.forum),
+    url(r'^reply/(?P<v_id>\d+)/$','patients.views.solution'),
+    url(r'^prob/$',views.problem),
+    url(r'^query/(?P<q_id>\d+)/$','patients.views.allquery'),
+    url(r'^result/(?P<g_id>\d+)/', views.result),
+    
+    
 
 
 )

@@ -95,3 +95,20 @@ class DescriptionForm(forms.Form):
 
     add_description = forms.CharField(max_length = 80)
     img_upload = forms.FileField(label = 'select an image')
+
+class SearchForm(forms.Form):
+    adress_or_specialization = forms.CharField(max_length = 50)
+
+class ForumForm(forms.Form):
+
+    question = forms.CharField(max_length = 200)
+    tag = forms.CharField(max_length = 50)
+
+class SolutionForm(forms.Form):
+    
+    answer = forms.CharField(max_length = 400)
+
+
+
+    
+

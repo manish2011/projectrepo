@@ -18,15 +18,18 @@ Home page
 
 </ul>
 
-<br><br><br>
-<a href = "/patients/beneficiar">BLOOD REQUIRED </a>
-<br><br><br><br><br>
-
-<a href = "/patients/reset">change password </a>
-<br><br><br><br><br>
-<a href = "/patients/list">upload a file </a>
 
 
+<br><br><br><br><br><br><br><br>
+{% if request.user.is_authenticated %}
+<a href = "/patients/beneficiar">Blood required </a>
+<br><a href = "/patients/reset">change password </a><br>
+<a href = "/patients/list">upload a file </a><br>
+<a href = "{% url patients.views.search %}">Search Doctor  by Address or Specialization</a><br>
+<a href = "/patients/ask">Ask Your Question </a><br>
+<a href = "/patients/prob">Go to the forum</a>
+
+{% endif %}
 
 {% endblock  %}
 

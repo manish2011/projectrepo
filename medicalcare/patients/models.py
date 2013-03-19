@@ -80,3 +80,19 @@ class Description(models.Model):
     add_description = models.CharField(max_length = 80)
     posted_date = models.DateField()
     img_upload = models.FileField(upload_to = 'documents')
+
+class Forum(models.Model):
+
+    posted_by = models.ForeignKey(User)
+    question = models.CharField(max_length = 200)
+    posted_date = models.DateField()
+    tag = models.CharField(max_length = 50)
+
+class Solution(models.Model):
+
+    answered_by = models.ForeignKey(User)
+    forum = models.ForeignKey(Forum)
+    answer = models.CharField(max_length = 300)
+    Posted_date = models.DateField()
+
+

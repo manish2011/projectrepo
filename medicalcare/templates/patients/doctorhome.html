@@ -34,7 +34,11 @@ Registered patients
 
 <br><br><br><br><br>
 
+       {% if request.user.is_staff %}
+
       <a href = "/patients/remove/{{ users.id }}">delete user</a>
+
+           {% endif %}
 
        <center><h2><i><a href="/">Back to home Page</a></i></h2></center><br>
 

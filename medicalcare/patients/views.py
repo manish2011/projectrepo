@@ -7,7 +7,7 @@ from patients.models import Doctors
 from patients.models import Donors
 from patients.models import Document
 from patients.models import Description
-from patients.models import Benificiar
+from patients.models import Benificiar, Forum, Solution
 
 from patients.forms import DocumentForm
 from patients.models import Care
@@ -19,9 +19,9 @@ from patients.forms import DeleteForm
 from patients.forms import ChangePasswordForm
 from patients.forms import ForgotPasswordForm
 from patients.forms import NewPasswordForm
-from patients.forms import BeneficiarForm
-from patients.forms import DonorForm
-from patients.forms import DescriptionForm  
+from patients.forms import BeneficiarForm, SolutionForm
+from patients.forms import DonorForm, ForumForm
+from patients.forms import DescriptionForm, SearchForm
 import datetime
 
 from django.views.decorators.csrf import csrf_exempt
@@ -187,7 +187,7 @@ def state(request):
 
 
 ############################################################# Function For creating a third user as ADMIN #########################################################
-###################################################################################################################################################################
+######################################################################################################username=request.user.username#############################################################
 
 
 @csrf_exempt
@@ -283,7 +283,7 @@ def logout_view(request):
     return HttpResponseRedirect( reverse('patients.views.index') )
 
 
-######################################################## Function for adding description toany patient by the doctor ##############################################
+######################################################## Function for adding description to any patient by the doctor #############################################
 ###################################################################################################################################################################
 
 
@@ -308,6 +308,12 @@ def desc_app(request,p_id):
     else:
         form=DescriptionForm()
         return render_to_response('patients/description.html',locals())
+
+def details(request,c_id):
+    pat = Description.objects.filter(patient=Patients.objects.get(id = c_id))
+    
+    return render_to_response('patients/details.html',locals())
+
 
 
 def patientdata(request):
@@ -571,9 +577,89 @@ def list_all(request):
     return render_to_response('patients/file.html',locals())
 
 
-def details(request,c_id):
-    pat = Description.objects.filter(patient=Patients.objects.get(id = c_id))
-    
-    return render_to_response('patients/details.html',locals())
 
+
+################################################## Function for search ############################################################################################
+###################################################################################################################################################################
+
+def search(request):
+    if request.method == "POST":
+        form = SearchForm(request.POST)
+        if form.is_valid():
+            
+            doc = Doctors.objects.filter(address = form.cleaned_data['adress_or_specialization'])
+            special = Doctors.objects.filter(specialization = form.cleaned_data['adress_or_specialization'])
+            return render_to_response('patients/got.html',locals())
+        else:
+            regform = form
+            return render_to_response('patients/search.html',locals())
+    else:
+        form = SearchForm()
+        return render_to_response('patients/search.html',locals())
+
+######################################################## Function for Forum #######################################################################################
+###################################################################################################################################################################
+
+def forum(request):
+
+    if request.method == "POST":
+        form = ForumForm(request.POST)
+        if form.is_valid():
+            ques = Forum.objects.create(
+            posted_by = request.user,
+            tag = form.cleaned_data['tag'],
+            question = form.cleaned_data['question'],
+            posted_date = datetime.datetime.today(),
+            )
+            ques.save()
+            return render_to_response('patients/question.html',locals())
+        else:
+            regform = form 
+            return render_to_response('patients/ask.html',locals())
+    else:
+        form = ForumForm()
+        return render_to_response('patients/ask.html',locals())
+
+
+def solution(request,v_id):
+    
+    if request.method == "POST":
+        form = SolutionForm(request.POST)
+        if form.is_valid():
+            sol = Solution.objects.create(
+            answered_by = request.user,
+            forum = Forum.objects.get(id = v_id),
+            answer = form.cleaned_data['answer'],
+            Posted_date = datetime.datetime.today(),
+            )
+            sol.save()
+            return render_to_response('patients/solution.html',locals())
+        else:
+            regform = form
+            return render_to_response('patients/reply.html',locals())
+    else:
+        form = SolutionForm()
+        return render_to_response('patients/reply.html',locals())
+
+
+def problem(request):
+
+    query = Forum.objects.all()
+    return render_to_response('patients/probs.html',locals())
+    
+   
+
+def allquery(request,q_id):
+
+    query = Forum.objects.get(id = q_id)
+    return render_to_response('patients/allquery.html',locals())
+
+def result(request,g_id):
+    res = Solution.objects.filter(forum = Forum.objects.get(id = g_id))
+    
+    return render_to_response('patients/result.html',locals())
+
+
+ 
+        
             
